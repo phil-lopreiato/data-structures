@@ -1,0 +1,3 @@
+# Data Structures!
+
+Here's a place to keep the data structure I've had to write for my CS courses over the years...
