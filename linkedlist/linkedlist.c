@@ -23,6 +23,7 @@ ll *ll_init(){
     list->head = NULL;
     list->tail = NULL;
     list->size = 0;
+    return list;
 }
 
 ll_node *ll_create_node(void *data){
