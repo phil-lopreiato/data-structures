@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "hashtable.h"
-#include "linkedlist.h"
+#include "../linkedlist/linkedlist.h"
 
 /* Initialize a hash table.
  * Takes arguments for num buckets, max elements/bucket,
@@ -58,15 +58,19 @@ ht_node *ht_create_node(char *key, void *value, int file_index){
 
 /* Insert a node into the hashtable if it doesn't already exist */
 void ht_insert(ht *table, ht_node *node){
+    ll *list;
+    ht_node *lookup;
+
     if(!node || !table || table->size == 0) return;
 
-    /* First, calculate the hascode for the node */
+    /* First, calculate the hashcode for the node */
     (*table->hash_func)(node);
 
+    /* Keep this node's rebalance count in sync with the table's */
     node->rebal = table->rebal_count; 
 
-    ll *list = ht_get_bucket(table, node->hash);
-    ht_node *lookup = ht_lookup(table, node);
+    list = ht_get_bucket(table, node->hash);
+    lookup = ht_lookup(table, node);
 
     if(!lookup || table->in_rebalance){
         /* If the node doesn't already exist in the table, insert it into the proper list */
@@ -173,13 +177,13 @@ void ht_print(ht *table){
 
 /* Function to show some states about the hashtable */
 void ht_print_stats(ht *table){
+    unsigned short allowed_buckets = (unsigned short)(table->fill_pct * table->size);
     printf("Hashtable size: %u\n", table->size);
     printf("Autobalancing enabled? %s\n", table->allow_rebal?"Yes":"No");
     printf("Buckets used: %u\n", table->used);
     printf("Number of nodes: %u\n", table->node_count);
     printf("Largest bucket: %u\n", table->current_max);
     printf("Max bucket size: %u\n", table->max_length); 
-    unsigned short allowed_buckets = (unsigned short)(table->fill_pct * table->size);
     printf("Max number of used buckets: %u\n",allowed_buckets);
 }
 

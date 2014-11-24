@@ -13,7 +13,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "linkedlist.h"
+#include "../linkedlist/linkedlist.h"
 
 #ifndef FILE_HASHTABLE
 #define FILE_HASHTABLE
