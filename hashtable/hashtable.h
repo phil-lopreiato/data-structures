@@ -47,36 +47,36 @@ typedef struct ht{
 } ht;
 
 // initialize a hash table with the given number of buckets
-ht *ht_init(unsigned short, unsigned short, float, unsigned short, void(*hash_node)(ht_node*), int(*node_equal)(ht_node*, ht_node*));
+ht *ht_init(unsigned short size, unsigned short max_length, float fill_pct, unsigned short allow_rebal, void(*hash_node)(ht_node*), int(*node_equal)(ht_node*, ht_node*));
 
 // create a node (key, value, hash code)
-ht_node *ht_create_node(char*, void*, int);
+ht_node *ht_create_node(char* key, void* value, int file_index);
 
 // put something into the hashtable
-void ht_insert(ht*, ht_node*);
+void ht_insert(ht* table, ht_node* node);
 
 // check if we need to rebalance the table, accoring to our params
-unsigned short ht_check_rebalance(ht*);
+unsigned short ht_check_rebalance(ht* table);
 
 // actually rebalance the table
-void ht_rebalance(ht**);
+void ht_rebalance(ht** table);
 
 // lookup a key/value pair
-ht_node *ht_lookup(ht*,ht_node*);
+ht_node *ht_lookup(ht* table, ht_node* data);
 
 // lookup a key
-ll *ht_lookup_key(ht*, int);
+ll *ht_lookup_key(ht* table, int hash);
 
 //  get the bucket associated node data
-ll *ht_get_bucket(ht*, int);
+ll *ht_get_bucket(ht* table, int hash);
 
-void ht_print(ht*);
-void ht_print_node(ll_node*);
-void ht_print_stats(ht*);
+void ht_print(ht* table);
+void ht_print_node(ll_node* node);
+void ht_print_stats(ht* table);
 
 // free all memory associated with the hash table
-void ht_free(ht*);
+void ht_free(ht* table);
 
-void ht_free_node(ll_node*);
+void ht_free_node(ll_node* node);
 
 #endif
