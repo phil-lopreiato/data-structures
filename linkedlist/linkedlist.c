@@ -1,8 +1,8 @@
 /*
  * Copyright (c) 2014 Phil Lopreiato
- * 
- * This program is licensed under the MIT license. 
- * You should have recieved a copy of the full license terms 
+ *
+ * This program is licensed under the MIT license.
+ * You should have recieved a copy of the full license terms
  * with this source code. If not, you can find it here: http://opensource.org/licenses/MIT
  */
 
@@ -10,8 +10,8 @@
 #include <stdio.h>
 #include "linkedlist.h"
 
-ll *ll_init(){
-    ll *list = malloc(sizeof(ll));
+struct ll *ll_init(){
+    struct ll *list = malloc(sizeof(struct ll));
     if(!list) return NULL;
     list->head = NULL;
     list->tail = NULL;
@@ -19,8 +19,8 @@ ll *ll_init(){
     return list;
 }
 
-ll_node *ll_create_node(void *data){
-    ll_node *node = malloc(sizeof(ll_node));
+struct ll_node *ll_create_node(void *data){
+    struct ll_node *node = malloc(sizeof(struct ll_node));
     if(!node) return NULL;
     node->data = data;
     node->next = NULL;
@@ -28,11 +28,11 @@ ll_node *ll_create_node(void *data){
     return node;
 }
 
-int ll_get_size(ll *list){
+int ll_get_size(struct ll *list){
     return list->size;
 }
 
-void ll_append(ll *list, ll_node *node){
+void ll_append(struct ll *list, struct ll_node *node){
     node->last = list->tail;
     if(node->last){
         node->last->next = node;
@@ -45,15 +45,15 @@ void ll_append(ll *list, ll_node *node){
     list->size++;
 }
 
-void ll_prepend(ll *list, ll_node *node){
+void ll_prepend(struct ll *list, struct ll_node *node){
     list->head->last = node;
     node->next = list->head;
     list->head = node;
     list->size++;
-} 
+}
 
-ll_node *ll_first(ll *list){
-    ll_node *node = list->head;
+struct ll_node *ll_first(struct ll *list){
+    struct ll_node *node = list->head;
     if(node){
         list->head = node->next;
         list->head->last = NULL;
@@ -62,12 +62,12 @@ ll_node *ll_first(ll *list){
     return node;
 }
 
-ll_node *ll_first_peek(ll *list){
+struct ll_node *ll_first_peek(struct ll *list){
     return list->head;
 }
 
-ll_node *ll_last(ll *list){
-    ll_node *node = list->tail;
+struct ll_node *ll_last(struct ll *list){
+    struct ll_node *node = list->tail;
     if(node){
         list->tail = node->last;
         list->tail->next = NULL;
@@ -76,22 +76,22 @@ ll_node *ll_last(ll *list){
     return node;
 }
 
-ll_node *ll_last_peek(ll *list){
+struct ll_node *ll_last_peek(struct ll *list){
     return list->tail;
 }
 
-void ll_print(ll *list, void(*print_node)(ll_node*)){
+void ll_print(struct ll *list, void(*print_node)(struct ll_node*)){
     printf("List has %d elements\n", list->size);
-    ll_node *node = list->head;
+    struct ll_node *node = list->head;
     while(node){
         (*print_node)(node);
         printf("->");
         node = node->next;
-    } 
+    }
     printf("\n");
-} 
+}
 
-void ll_remove(ll *list, ll_node *node){
+void ll_remove(struct ll *list, struct ll_node *node){
     if(node->last){
         node->last->next = node->next;
     }else{
@@ -107,13 +107,14 @@ void ll_remove(ll *list, ll_node *node){
     list->size--;
 
     node->next = NULL;
-    node->last = NULL;   
+    node->last = NULL;
 }
 
-void ll_clear(ll *list, void(*free_node)(ll_node*)){
-    ll_node *node = list->head;
+void ll_clear(struct ll *list, void(*free_node)(struct ll_node*)){
+    struct ll_node *temp;
+    struct ll_node *node = list->head;
     while(node){
-        ll_node *temp = node->next;
+        temp = node->next;
         if(free_node){
             (*free_node)(node->data);
         }
@@ -125,7 +126,7 @@ void ll_clear(ll *list, void(*free_node)(ll_node*)){
     list->tail = NULL;
 }
 
-void ll_free(ll *list, void(*free_node)(ll_node*)){
+void ll_free(struct ll *list, void(*free_node)(struct ll_node*)){
     ll_clear(list, free_node);
     free(list);
 }

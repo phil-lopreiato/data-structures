@@ -3,23 +3,23 @@
 #include <assert.h>
 #include "../linkedlist.h"
 
-void assertEmptyList(ll *list);
-void assertListNode(ll_node *node, int val);
-void assertSingleItem(ll *list);
-void assertMultiItem(ll *list);
-void assertDequeue(ll *list);
-void assertClear(ll *list);
-void assertFree(ll *list);
+void assertEmptyList(struct ll *list);
+void assertListNode(struct ll_node *node, int val);
+void assertSingleItem(struct ll *list);
+void assertMultiItem(struct ll *list);
+void assertDequeue(struct ll *list);
+void assertClear(struct ll *list);
+void assertFree(struct ll *list);
 
 int main(){
-    ll *list;
-    ll_node *node, *node2, *node3;
+    struct ll *list;
+    struct ll_node *node, *node2, *node3;
     int val = 4, val2 = 5, val3 = 6;
 
     printf("Testing linkedlist...\n");
-    
+
     list = ll_init();
-    
+
     /* Assert that we've gotten memory for our list */
     printf("Checking list has been allocated... ");
     assert(list);
@@ -52,7 +52,7 @@ int main(){
 }
 
 /* Makes sure that an empty list has all the properties we expect */
-void assertEmptyList(ll *list){
+void assertEmptyList(struct ll *list){
     printf("Checking list has 0 size...");
     assert(list->size == 0);
     printf("OK\nChecking list head is NULL...");
@@ -63,7 +63,7 @@ void assertEmptyList(ll *list){
 }
 
 /* Make sure we allocated a node properly */
-void assertListNode(ll_node *node, int val){
+void assertListNode(struct ll_node *node, int val){
     printf("Checking node was allocated...");
     assert(node);
     printf("OK\nChecking data in node...");
@@ -72,7 +72,7 @@ void assertListNode(ll_node *node, int val){
 }
 
 /* Check the first node got added okay */
-void assertSingleItem(ll *list){
+void assertSingleItem(struct ll *list){
     assert(list);
     printf("Checking size is 1...");
     assert(list->size == 1);
@@ -85,8 +85,8 @@ void assertSingleItem(ll *list){
 }
 
 /* Check our three item list is okay */
-void assertMultiItem(ll *list){
-    ll_node *head, *tail;
+void assertMultiItem(struct ll *list){
+    struct ll_node *head, *tail;
     assert(list);
     printf("Checking list size is 3...");
     assert(list->size == 3);
@@ -104,8 +104,8 @@ void assertMultiItem(ll *list){
 }
 
 /* Make sure we can dequeue elements in the list, from head and tail */
-void assertDequeue(ll *list){
-    ll_node *head, *tail;
+void assertDequeue(struct ll *list){
+    struct ll_node *head, *tail;
     assert(list);
     printf("Checking the head node is correct...");
     head = ll_first(list);
@@ -124,7 +124,7 @@ void assertDequeue(ll *list){
     printf("OK\n");
 }
 
-void assertClear(ll *list){
+void assertClear(struct ll *list){
     assert(list);
     printf("Making sure we can clear the list...");
     assert(ll_get_size(list) == 1);
@@ -136,9 +136,9 @@ void assertClear(ll *list){
     printf("OK\n");
 }
 
-void assertFree(ll *list){
+void assertFree(struct ll *list){
     assert(list);
     printf("Making sure we can free the list...");
     ll_free(list, NULL);
-    printf("OK\n");    
+    printf("OK\n");
 }
