@@ -5,4 +5,4 @@ hashtable:
 	gcc -std=c99 -pedantic -Wall -c hashtable.c
 
 clean:
-	rm *.o
+	rm hashtable.o

@@ -9,4 +9,4 @@ tests:
 
 clean:
 	rm linkedlist.o
-	cd test && rm test_list
+	cd test && rm test-list
