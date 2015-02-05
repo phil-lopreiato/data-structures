@@ -18,7 +18,8 @@
  * and function for equality comparison
  */
 struct ht*
-ht_init(unsigned short size, unsigned short max_length, float fill_pct, unsigned short allow_rebal, void(*hash_node)(struct ht_node*), int(*node_equal)(struct ht_node*, struct ht_node*)){
+ht_init(unsigned short size, unsigned short max_length, float fill_pct, unsigned short allow_rebal, void(*hash_node)(struct ht_node*), int(*node_equal)(struct ht_node*, struct ht_node*))
+{
     struct ht *table = malloc(sizeof(struct ht));
     table->size = size;
     table->used = 0;
@@ -40,7 +41,8 @@ ht_init(unsigned short size, unsigned short max_length, float fill_pct, unsigned
 
 /* Create a node that's ready to be inserted into the hashtable */
 struct ht_node*
-ht_create_node(char *key, void *value){
+ht_create_node(char *key, void *value)
+{
     if(!key || !value) return NULL;
     struct ht_node *node = malloc(sizeof(struct ht_node));
     node->key = key;
@@ -52,7 +54,8 @@ ht_create_node(char *key, void *value){
 
 /* Insert a node into the hashtable if it doesn't already exist */
 void
-ht_insert(struct ht *table, struct ht_node *node){
+ht_insert(struct ht *table, struct ht_node *node)
+{
     struct ll *list;
     struct ht_node *lookup;
 
@@ -87,7 +90,8 @@ ht_insert(struct ht *table, struct ht_node *node){
 }
 
 unsigned short
-ht_check_rebalance(struct ht *table){
+ht_check_rebalance(struct ht *table)
+{
     // we want to rebalance our table if:
     // A list is over the maximum allowed length OR
     // most than the specified buckets are occupied
@@ -100,7 +104,8 @@ ht_check_rebalance(struct ht *table){
 
 /* If we need to, enlarge the size of the table so we can reduce the length of the lists */
 void
-ht_rebalance(struct ht **table){
+ht_rebalance(struct ht **table)
+{
     while(ht_check_rebalance(*table)){
         struct ll **buckets = (*table)->buckets;
         int oldsize = (*table)->size;
@@ -127,7 +132,8 @@ ht_rebalance(struct ht **table){
 
 /* Check and see if a node exists in the hashtable */
 struct ht_node*
-ht_lookup(struct ht *table, struct ht_node *lookup){
+ht_lookup(struct ht *table, struct ht_node *lookup)
+{
     struct ll *list = ht_get_bucket(table, lookup->hash);
     struct ll_node *check_node = list->head;
     while(check_node){
@@ -144,7 +150,8 @@ ht_lookup(struct ht *table, struct ht_node *lookup){
 
 /* Get a list of all the nodes that have a certain key (regardless of value) */
 struct ll*
-ht_lookup_key(struct ht* table, int hash){
+ht_lookup_key(struct ht* table, int hash)
+{
     struct ll *output = ll_init();
     struct ll *list = ht_get_bucket(table, hash);
     struct ll_node *check_node = list->head;
@@ -162,14 +169,16 @@ ht_lookup_key(struct ht* table, int hash){
 
 /* Take the node's hashcode, mod with bucket size to get the bucket */
 struct ll*
-ht_get_bucket(struct ht *table, int hash_code){
+ht_get_bucket(struct ht *table, int hash_code)
+{
     int bucket = hash_code % table->size;
     return table->buckets[bucket];
 }
 
 /* Print out the hash table! */
 void
-ht_print(struct ht *table){
+ht_print(struct ht *table)
+{
     for(int i=0; i<table->size; i++){
         struct ll *bucket = table->buckets[i];
         ll_print(bucket, &ht_print_node);
@@ -178,7 +187,8 @@ ht_print(struct ht *table){
 
 /* Function to show some states about the hashtable */
 void
-ht_print_stats(struct ht *table){
+ht_print_stats(struct ht *table)
+{
     unsigned short allowed_buckets = (unsigned short)(table->fill_pct * table->size);
     printf("Hashtable size: %u\n", table->size);
     printf("Autobalancing enabled? %s\n", table->allow_rebal?"Yes":"No");
@@ -191,7 +201,8 @@ ht_print_stats(struct ht *table){
 
 /* Function for printing the nodes we've inserted into the linkedlists */
 void
-ht_print_node(struct ll_node *node){
+ht_print_node(struct ll_node *node)
+{
     struct ht_node *data = (struct ht_node*)(node->data);
     char *value = (char*)data->value;
     printf("[(%s, %s): %d]", data->key, value, data->hash);
@@ -199,14 +210,16 @@ ht_print_node(struct ll_node *node){
 
 /* Free a hashnode */
 void
-ht_free_node(struct ll_node *node){
+ht_free_node(struct ll_node *node)
+{
     struct ht_node *data = node->data;
     free(data);
 }
 
 /* Free the hashtable */
 void
-ht_free(struct ht *table){
+ht_free(struct ht *table)
+{
     for(int i=0; i<table->size; i++){
        ll_free(table->buckets[i], &ht_free_node);
     }
