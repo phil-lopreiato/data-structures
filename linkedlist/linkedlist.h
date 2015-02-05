@@ -9,15 +9,15 @@
 #ifndef FILE_LINKEDLIST
 #define FILE_LINKEDLIST
 struct ll_node{
-    void *data;
-    struct ll_node *next;
-    struct ll_node *last;
+        void *data;
+        struct ll_node *next;
+        struct ll_node *last;
 };
 
 struct ll{
-    struct ll_node *head;
-    struct ll_node *tail;
-    int size;
+        struct ll_node *head;
+        struct ll_node *tail;
+        int size;
 };
 
 //initialize empty list
