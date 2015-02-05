@@ -40,14 +40,13 @@ ht_init(unsigned short size, unsigned short max_length, float fill_pct, unsigned
 
 /* Create a node that's ready to be inserted into the hashtable */
 struct ht_node*
-ht_create_node(char *key, void *value, int file_index){
+ht_create_node(char *key, void *value){
     if(!key || !value) return NULL;
     struct ht_node *node = malloc(sizeof(struct ht_node));
     node->key = key;
     node->value = value;
     node->rebal = 0;
     node->hash = -1;
-    node->file_index = file_index;
     return node;
 }
 
@@ -195,7 +194,7 @@ void
 ht_print_node(struct ll_node *node){
     struct ht_node *data = (struct ht_node*)(node->data);
     char *value = (char*)data->value;
-    printf("[(%s, %s - %d): %d]", data->key, value, data->file_index, data->hash);
+    printf("[(%s, %s): %d]", data->key, value, data->hash);
 }
 
 /* Free a hashnode */

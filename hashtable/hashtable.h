@@ -20,7 +20,6 @@ struct ht_node{
     char *key;
     void *value;
     int hash;
-    int file_index;
     unsigned short rebal;       // number of times this node has been rebalanced
 };
 
@@ -45,7 +44,7 @@ ht_init(unsigned short size, unsigned short max_length, float fill_pct, unsigned
 
 // create a node (key, value, hash code)
 struct ht_node*
-ht_create_node(char* key, void* value, int file_index);
+ht_create_node(char* key, void* value);
 
 // put something into the hashtable
 void
