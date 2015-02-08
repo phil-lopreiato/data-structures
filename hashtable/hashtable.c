@@ -18,7 +18,7 @@
  * and function for equality comparison
  */
 struct ht*
-ht_init(unsigned short size, unsigned short max_length, float fill_pct, unsigned short allow_rebal, void(*hash_node)(struct ht_node*), int(*node_equal)(struct ht_node*, struct ht_node*))
+ht_init(unsigned short size, unsigned short max_length, float fill_pct, unsigned short allow_rebal, HASH_FUNC, NODE_EQUAL)
 {
     struct ht *table = malloc(sizeof(struct ht));
     table->size = size;
@@ -29,7 +29,7 @@ ht_init(unsigned short size, unsigned short max_length, float fill_pct, unsigned
     table->rebal_count = 0;
     table->in_rebalance = 0;
     table->allow_rebal = allow_rebal;
-    table->hash_func = hash_node;
+    table->hash_func = hash_func;
     table->node_equal = node_equal;
     table->current_max = 0;
     table->node_count = 0;
@@ -62,7 +62,7 @@ ht_insert(struct ht *table, struct ht_node *node)
     if(!node || !table || table->size == 0) return;
 
     /* First, calculate the hashcode for the node */
-    (*table->hash_func)(node);
+    node->hash = (*table->hash_func)(node->key);
 
     /* Keep this node's rebalance count in sync with the table's */
     node->rebal = table->rebal_count;

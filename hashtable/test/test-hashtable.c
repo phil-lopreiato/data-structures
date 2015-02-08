@@ -13,7 +13,7 @@
 #define KEY3 "key3"
 #define VAL3 7
 
-void hash_node(struct ht_node* node);
+int hash_node(char* key);
 int node_compare(struct ht_node* node1, struct ht_node* node2);
 
 void assertSimpleTable(struct ht* table);
@@ -99,13 +99,13 @@ assertSingleNode(struct ht* table, struct ht_node* node)
     printf("OK\n");
 }
 
-void
-hash_node(struct ht_node* node)
+int
+hash_node(char* key)
 {
         int sum = 0;
-        char *str = node->key;
+        char *str = key;
         while(*str) { sum += *str++; }
-        node->hash = sum;
+        return sum;
 }
 
 int
