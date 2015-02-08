@@ -48,7 +48,7 @@ int main(){
         assertClear(list);
         assertFree(list);
 
-        printf("\nAll tests passed!\n");
+        printf("All linkedlist tests passed!\n\n");
 }
 
 /* Makes sure that an empty list has all the properties we expect */

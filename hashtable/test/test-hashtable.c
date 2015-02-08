@@ -61,6 +61,8 @@ main()
         assertNodeEquals(node1, node2, node3);
         assertLookups(table);
         assertMultiNode(table);
+
+        printf("All hashtable tests passed\n\n");
 }
 
 void
