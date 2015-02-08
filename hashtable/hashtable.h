@@ -14,6 +14,9 @@
 #define ENABLE_REBALANCE 1
 #define DISABLE_REBALANCE 0
 
+// Simple table init, do not allow rebalancing
+#define ht_init_simple(size, hash_func, node_equal) ht_init(size, 0, 0, 0, hash_func, node_equal)
+
 // will not be a 1-1 function
 // there may be more than one value for a given key
 struct ht_node{

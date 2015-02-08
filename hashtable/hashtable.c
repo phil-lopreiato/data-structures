@@ -93,7 +93,8 @@ ht_check_rebalance(struct ht *table){
     // most than the specified buckets are occupied
 
     unsigned short allowed_buckets = (unsigned short)(table->fill_pct * table->size);
-    return !table->in_rebalance &&
+    return table->allow_rebal &&
+                !table->in_rebalance &&
                 (table->used > allowed_buckets ||
                  table->current_max > table->max_length);
 }
