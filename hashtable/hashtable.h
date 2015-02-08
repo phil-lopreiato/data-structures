@@ -65,9 +65,9 @@ ht_check_rebalance(struct ht* table);
 void
 ht_rebalance(struct ht** table);
 
-// lookup a key/value pair
+// lookup a key in the table
 struct ht_node*
-ht_lookup(struct ht* table, struct ht_node* data);
+ht_lookup(struct ht* table, char* key);
 
 // lookup a key
 struct ll*

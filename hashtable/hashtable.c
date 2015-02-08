@@ -68,7 +68,7 @@ ht_insert(struct ht *table, struct ht_node *node)
     node->rebal = table->rebal_count;
 
     list = ht_get_bucket(table, node->hash);
-    lookup = ht_lookup(table, node);
+    lookup = ht_lookup(table, node->key);
 
     if(!lookup || table->in_rebalance){
         /* If the node doesn't already exist in the table, insert it into the proper list */
@@ -131,16 +131,16 @@ ht_rebalance(struct ht **table)
     }
 }
 
-/* Check and see if a node exists in the hashtable */
+/* Check and see if a node with a given key exists in the hashtable */
 struct ht_node*
-ht_lookup(struct ht *table, struct ht_node *lookup)
+ht_lookup(struct ht *table, char* key)
 {
-    struct ll *list = ht_get_bucket(table, lookup->hash);
+    int hash = (*table->hash_func)(key)
+    struct ll *list = ht_get_bucket(table, hash);
     struct ll_node *check_node = list->head;
     while(check_node){
         struct ht_node *data = (struct ht_node*)check_node->data;
-        /* Use the client supplied equality function to see if the nodes are equal */
-        if((*table->node_equal)(data, lookup)){
+        if(data->hash == hash){
             return data;
         }
         check_node = check_node->next;
