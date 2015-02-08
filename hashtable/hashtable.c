@@ -135,7 +135,7 @@ ht_rebalance(struct ht **table)
 struct ht_node*
 ht_lookup(struct ht *table, char* key)
 {
-    int hash = (*table->hash_func)(key)
+    int hash = (*table->hash_func)(key);
     struct ll *list = ht_get_bucket(table, hash);
     struct ll_node *check_node = list->head;
     while(check_node){

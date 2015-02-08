@@ -4,7 +4,7 @@
 
 #include "../hashtable.h"
 
-#define BUCKET_COUNT 3
+#define BUCKET_COUNT 2
 
 #define KEY1 "key1"
 #define VAL1 2
@@ -12,6 +12,7 @@
 #define VAL2 4
 #define KEY3 "key3"
 #define VAL3 7
+#define BAD_KEY "meow"
 
 int hash_node(char* key);
 int node_compare(struct ht_node* node1, struct ht_node* node2);
@@ -19,6 +20,8 @@ int node_compare(struct ht_node* node1, struct ht_node* node2);
 void assertSimpleTable(struct ht* table);
 void assertNodeEquals(struct ht_node* node1, struct ht_node* node2, struct ht_node* node3);
 void assertSingleNode(struct ht* table, struct ht_node* node);
+void assertLookups(struct ht* table);
+void assertMultiNode(struct ht* table);
 
 int
 main()
@@ -56,6 +59,18 @@ main()
         ht_insert(table, node3);
         printf("OK\n");
         assertNodeEquals(node1, node2, node3);
+        assertLookups(table);
+        assertMultiNode(table);
+}
+
+void
+assertMultiNode(struct ht* table)
+{
+        printf("Checking table size is 3...");
+        assert(table->node_count == 3);
+        printf("OK\nChecking that all buckets are being used...");
+        assert(table->used == BUCKET_COUNT);
+        printf("OK\n");
 }
 
 void
@@ -65,6 +80,20 @@ assertNodeEquals(struct ht_node* node1, struct ht_node* node2, struct ht_node* n
         assert(node_compare(node1, node1));
         printf("OK\nChecking node2 != node3...");
         assert(!node_compare(node2, node3));
+        printf("OK\n");
+}
+
+void
+assertLookups(struct ht* table)
+{
+        printf("Checking if a node with key %s exists in the table...", KEY1);
+        assert(ht_lookup(table, KEY1));
+        printf("OK\nChecking if node with key %s exists in the table...", KEY2);
+        assert(ht_lookup(table, KEY2));
+        printf("OK\nChecking if node with key %s exists in the table...", KEY3);
+        assert(ht_lookup(table, KEY3));
+        printf("OK\nChecking node with key %s isn't in the table...", BAD_KEY);
+        assert(!ht_lookup(table, BAD_KEY));
         printf("OK\n");
 }
 
