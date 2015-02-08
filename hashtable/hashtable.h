@@ -26,13 +26,17 @@ struct ht_node{
     unsigned short rebal;       // number of times this node has been rebalanced
 };
 
+// function pointer definitions
+#define HASH_FUNC int(*hash_func)(char* key)
+#define NODE_EQUAL int(*node_equal)(struct ht_node* node1, struct ht_node* node2)
+
 struct ht{
     unsigned short size;        // number of buckets in the list
     unsigned short used;        // number of buckets in use
     unsigned short current_max; // current largest bucket size
     unsigned short max_length;  // max size of a bucket list
-    void(*hash_func)(struct ht_node*); // hash function we use
-    int(*node_equal)(struct ht_node*, struct ht_node*);// compare two nodes
+    HASH_FUNC;                  // hash function we use
+    NODE_EQUAL;                 // compare two nodes
     float fill_pct;             // max percent of bucket fillage
     struct ll **buckets;
     unsigned short rebal_count; // number of times the table has been rebalanced
@@ -43,7 +47,7 @@ struct ht{
 
 // initialize a hash table with the given number of buckets
 struct ht*
-ht_init(unsigned short size, unsigned short max_length, float fill_pct, unsigned short allow_rebal, void(*hash_node)(struct ht_node*), int(*node_equal)(struct ht_node*, struct ht_node*));
+ht_init(unsigned short size, unsigned short max_length, float fill_pct, unsigned short allow_rebal, HASH_FUNC, NODE_EQUAL);
 
 // create a node (key, value, hash code)
 struct ht_node*
@@ -61,9 +65,9 @@ ht_check_rebalance(struct ht* table);
 void
 ht_rebalance(struct ht** table);
 
-// lookup a key/value pair
+// lookup a key in the table
 struct ht_node*
-ht_lookup(struct ht* table, struct ht_node* data);
+ht_lookup(struct ht* table, char* key);
 
 // lookup a key
 struct ll*

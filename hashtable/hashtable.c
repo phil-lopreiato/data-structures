@@ -18,7 +18,7 @@
  * and function for equality comparison
  */
 struct ht*
-ht_init(unsigned short size, unsigned short max_length, float fill_pct, unsigned short allow_rebal, void(*hash_node)(struct ht_node*), int(*node_equal)(struct ht_node*, struct ht_node*))
+ht_init(unsigned short size, unsigned short max_length, float fill_pct, unsigned short allow_rebal, HASH_FUNC, NODE_EQUAL)
 {
     struct ht *table = malloc(sizeof(struct ht));
     table->size = size;
@@ -29,7 +29,7 @@ ht_init(unsigned short size, unsigned short max_length, float fill_pct, unsigned
     table->rebal_count = 0;
     table->in_rebalance = 0;
     table->allow_rebal = allow_rebal;
-    table->hash_func = hash_node;
+    table->hash_func = hash_func;
     table->node_equal = node_equal;
     table->current_max = 0;
     table->node_count = 0;
@@ -62,13 +62,13 @@ ht_insert(struct ht *table, struct ht_node *node)
     if(!node || !table || table->size == 0) return;
 
     /* First, calculate the hashcode for the node */
-    (*table->hash_func)(node);
+    node->hash = (*table->hash_func)(node->key);
 
     /* Keep this node's rebalance count in sync with the table's */
     node->rebal = table->rebal_count;
 
     list = ht_get_bucket(table, node->hash);
-    lookup = ht_lookup(table, node);
+    lookup = ht_lookup(table, node->key);
 
     if(!lookup || table->in_rebalance){
         /* If the node doesn't already exist in the table, insert it into the proper list */
@@ -131,16 +131,16 @@ ht_rebalance(struct ht **table)
     }
 }
 
-/* Check and see if a node exists in the hashtable */
+/* Check and see if a node with a given key exists in the hashtable */
 struct ht_node*
-ht_lookup(struct ht *table, struct ht_node *lookup)
+ht_lookup(struct ht *table, char* key)
 {
-    struct ll *list = ht_get_bucket(table, lookup->hash);
+    int hash = (*table->hash_func)(key);
+    struct ll *list = ht_get_bucket(table, hash);
     struct ll_node *check_node = list->head;
     while(check_node){
         struct ht_node *data = (struct ht_node*)check_node->data;
-        /* Use the client supplied equality function to see if the nodes are equal */
-        if((*table->node_equal)(data, lookup)){
+        if(data->hash == hash){
             return data;
         }
         check_node = check_node->next;
