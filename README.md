@@ -1,5 +1,4 @@
-# GWU CSCI 3411 F15 HW1
-## Data Structures in C!
+# Data Structures in C!
 
 This assignment contains three (3) parts:
  - Linked List (single, double, and circular links)
