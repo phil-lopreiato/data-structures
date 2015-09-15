@@ -1,5 +1,16 @@
-# Data Structures!
+# GWU CSCI 3411 F15 HW1
+## Data Structures in C!
 
-[![Build Status](https://travis-ci.org/phil-lopreiato/data-structures.png?branch=master)](https://travis-ci.org/phil-lopreiato/data-structures)
+This assignment contains three (3) parts:
+ - Linked List (single, double, and circular links)
+ - Binary Search Tree
+ - Priority Queue
 
-Here's a place to keep the data structure I've had to write for my CS courses over the years...
+### Compiling
+From the root directory, run `make`, which will compile all the code. If you want to compile one part individually, you can run `make` in a subdirectory. To compile with debug symbols, edit `vars.mk` in this directory and append `-g` to the variable `CFLAGS`.
+
+### Unit Testing
+From the root directory, run `make test`, which will compile all the code, then go through each data structure and run its unit tests. To run the tests for each data specific part, you can run `make && make test` in a subdirectory. Code for the tests can be found in a `test` subdirectory within the directory for each part.
+
+### Implementing On Your Own
+Each directory contains the relevant API spec for its data structure. In general, you will have to include the structure's header and link in the compiled object file.

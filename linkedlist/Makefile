@@ -1,12 +1,27 @@
+include ../vars.mk
 
-all: linkedlist tests
+.PHONY: test
 
-linkedlist:
-	gcc -std=c99 -pedantic -Wall -c linkedlist.c
+all: double single circular
 
-tests:
-	cd test && make
+core:
+	$(CC) $(CFLAGS) -c linkedlist_core.c
+
+double: core
+	$(CC) $(CFLAGS) -c double_linkedlist.c
+
+single: core
+	$(CC) $(CFLAGS) -c single_linkedlist.c
+
+circular: core
+	$(CC) $(CFLAGS) -c circular_linkedlist.c
+
+test:
+	cd test && make run
 
 clean:
-	rm linkedlist.o
-	cd test && rm test-list
+	rm -f linkedlist_core.o
+	rm -f double_linkedlist.o
+	rm -f single_linkedlist.o
+	rm -f circular_linkedlist.o
+	cd test && make clean

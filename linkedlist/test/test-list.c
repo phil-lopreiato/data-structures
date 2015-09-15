@@ -10,11 +10,12 @@ void assertMultiItem(struct ll *list);
 void assertDequeue(struct ll *list);
 void assertClear(struct ll *list);
 void assertFree(struct ll *list);
+int compare(void* data1, void* data2);
 
 int main(){
         struct ll *list;
         struct ll_node *node, *node2, *node3;
-        int val = 4, val2 = 5, val3 = 6;
+        int val = 4, val2 = 5, val3 = 6, val4 = 10;
 
         printf("Testing linkedlist...\n");
 
@@ -27,6 +28,7 @@ int main(){
 
         assertEmptyList(list);
 
+        printf("Inserting nodes... \n");
         node = ll_create_node(&val);
         assertListNode(node, val);
 
@@ -41,6 +43,13 @@ int main(){
         ll_append(list, node2);
         ll_prepend(list, node3);
         /* Data should now be 6, 4, 5 */
+
+        printf("Checking list contains new values... ");
+        assert(ll_exists(list, &val, &compare));
+        assert(ll_exists(list, &val2, &compare));
+        assert(ll_exists(list, &val3, &compare));
+        assert(!ll_exists(list, &val4, &compare));
+        printf("OK\n");
 
         assertMultiItem(list);
         assertDequeue(list);
@@ -67,17 +76,17 @@ void assertListNode(struct ll_node *node, int val){
         printf("Checking node was allocated...");
         assert(node);
         printf("OK\nChecking data in node...");
-        assert( *(int*)node->data == val);
+        assert(compare(node->data, &val));
         printf("OK\n");
 }
 
 /* Check the first node got added okay */
 void assertSingleItem(struct ll *list){
         assert(list);
-        printf("Checking size is 1...");
+        printf("Asserting size is 1...");
         assert(list->size == 1);
-        printf("OK...\n");
-        printf("Checking head and tail are defined...");
+        printf("OK\n");
+        printf("Checking head and tail are defined... ");
         assert(list->head);
         assert(list->tail);
         assert(list->head == list->tail);
@@ -141,4 +150,8 @@ void assertFree(struct ll *list){
         printf("Making sure we can free the list...");
         ll_free(list, NULL);
         printf("OK\n");
+}
+
+int compare(void* data1, void* data2) {
+        return *(int*)data1 == *(int*)data2;
 }

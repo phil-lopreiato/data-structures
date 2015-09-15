@@ -62,7 +62,13 @@ main()
         assertLookups(table);
         assertMultiNode(table);
 
-        printf("All hashtable tests passed\n\n");
+        printf("Freeing the hashtable...");
+        ht_free(table);
+        assert(!table);
+        //assert(!node1);
+        //assert(!node2);
+        //assert(!node3);
+        printf("OK\nAll hashtable tests passed\n\n");
 }
 
 void

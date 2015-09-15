@@ -1,9 +1,22 @@
-all: build
+.PHONY: all linkedlist bst pqueue test clean
 
-build:
+all: linkedlist bst pqueue
+
+linkedlist:
 	cd linkedlist && make
-	cd hashtable && make
 
-test:
-	./linkedlist/test/test-list
-	./hashtable/test/test-hashtable
+bst:
+	cd bst && make
+
+pqueue:
+	cd pqueue && make
+
+test: linkedlist bst pqueue
+	cd linkedlist && make test
+	cd bst && make test
+	cd pqueue && make test
+
+clean:
+	cd linkedlist && make clean
+	cd bst && make clean
+	cd pqueue && make clean
